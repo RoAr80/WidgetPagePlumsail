@@ -1,0 +1,57 @@
+{
+  "name": "widget_page_plumsail",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fluentui/react": "^8.46.2",
+    "@reduxjs/toolkit": "^1.8.5",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/jest": "^27.5.2",
+    "@types/node": "^16.11.60",
+    "moment": "^2.29.4",
+    "react": "^16.9.7",
+    "react-dom": "^16.9.7",
+    "react-redux": "^8.0.4",
+    "react-scripts": "3.0.1",
+    "redux": "^4.2.0",
+    "simple-react-validator": "^1.6.1",
+    "typescript": "^3.5.0",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "set REACT_APP_NODE_ENV=local&& react-scripts start",
+    "build_test": "set REACT_APP_NODE_ENV=development&& react-scripts build&& npx gulp",
+    "build_show": "react-scripts build&& npx gulp",
+    "build": "set REACT_APP_NODE_ENV=production&& react-scripts build&& npx gulp",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.6",
+    "@types/react-dom": "^16.9.7",
+    "gulp": "^4.0.2",
+    "gulp-hash-filename": "^4.0.0",
+    "gulp-inline-source": "^4.0.0",
+    "gulp-replace": "^1.1.3"
+  }
+}

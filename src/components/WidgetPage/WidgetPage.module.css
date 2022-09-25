@@ -1,0 +1,14 @@
+.container {
+  width: 1400px;
+}
+
+.leftContainer {  
+  flex-basis: 20%;
+  min-width: 0;
+  padding: 0px 10px;
+}
+
+.rightContainer {  
+  flex-basis: 80%;
+  padding-right: 10px;
+}
