@@ -1,9 +1,15 @@
 import { delayResult } from "../helpers/HelperFunction";
 import { IGetAppVersion } from "../interface/IGetAppVersion";
-import { IAppPostRation, IGetRation, IRation } from "../interface/IRation";
+import { IAppPostRation, IAppPostRationElastic, IGetRation, IGetRationElastic, IRation } from "../interface/IRation";
 import { IDbProvider } from "./IDbProvider";
 
 export class MockDbProvider implements IDbProvider {
+  addRationElastic(obj: IAppPostRationElastic): Promise<number> {
+    throw new Error("Method not implemented.");
+  }
+  getRationElastic(id: string): Promise<IAppPostRationElastic> {
+    throw new Error("Method not implemented.");
+  }
   getCurrentAppVersion(): Promise<IGetAppVersion> {
       throw new Error("Method not implemented.");
   }

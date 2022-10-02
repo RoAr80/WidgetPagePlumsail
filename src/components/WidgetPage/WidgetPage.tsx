@@ -28,7 +28,7 @@ import {
 } from "../../features/dietSlice";
 import { ValidatorOptions } from "../../helpers/ValidatorOptions";
 import { IPreferenceCheckbox } from "../../interface/IPreferenceCheckbox";
-import { IAppPostRation, IRation } from "../../interface/IRation";
+import { IAppPostRation, IAppPostRationElastic, IRation } from "../../interface/IRation";
 import style from "./WidgetPage.module.css";
 
 const fitnessOptions: IChoiceGroupOption[] = [
@@ -128,24 +128,19 @@ export default function WidgetPage() {
     if (!validator.allValid()) {
       validator.showMessages();
       setValue(value + 1);
-      console.log("i am here");
       return;
-    }
-    const ration = {
+    }    
+    const obj: IAppPostRationElastic = {
+      appVersionId: appVersionId!,
       comments: comments,
       name: name,
-      preferencesState: preferencesState,
+      preferencesState: preferencesState.filter(item => item.isChecked === true).map(item => item.label),
       selectedFitnessChoice: selectedFitnessChoice,
       sex: sex,
-      selectedMonthWithdrawal: selectedMonthWithdrawal,
-      selectedStartDate: selectedStartDate,
+      selectedMonthWithdrawal: selectedMonthWithdrawal ?? 0,
+      selectedStartDate: selectedStartDate ?? new Date(),
     };
-    const obj: IAppPostRation = {
-      ration: ration,
-      keywords: createKeywords(ration),
-      appVersionId: appVersionId ?? 0,
-    };
-    dbProvider.addRation(obj);
+    dbProvider.addRationElastic(obj);
   };
 
   function createKeywords(ration: IRation): string {

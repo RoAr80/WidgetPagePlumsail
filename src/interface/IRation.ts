@@ -41,3 +41,19 @@ export interface IAppPostRation {
   keywords: string;
   appVersionId: number;
 }
+
+export interface IAppPostRationElastic{
+  name: string;
+  sex: string;
+  selectedFitnessChoice: string;
+  selectedMonthWithdrawal: number;
+  selectedStartDate: Date;
+  comments: string;
+  preferencesState: string[];
+  appVersionId: number;
+}
+
+export interface IGetRationElastic {
+  id: string;
+  source: IAppPostRationElastic;
+}

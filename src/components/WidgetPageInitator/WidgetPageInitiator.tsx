@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 import { dbProvider } from "../../config/config";
 import { setAppVersion, setRationId } from "../../features/appSlice";
 import {
@@ -12,11 +12,13 @@ import {
   setSelectedStartDate,
   setSex,
 } from "../../features/dietSlice";
+import { IPreferenceCheckbox } from "../../interface/IPreferenceCheckbox";
 import { IRation } from "../../interface/IRation";
 import WidgetPage from "../WidgetPage/WidgetPage";
 
 export default function WidgetPageInitiator() {
-  const formId = useAppSelector((state) => state.app.rationId);
+  const formId = useAppSelector((state: RootState) => state.app.rationId);
+  const prefState: IPreferenceCheckbox[] = useAppSelector((state: RootState) => state.diet.preferencesState)
   const dispatch = useAppDispatch();
   useEffect(() => {
     window.addEventListener("message", receiveMessage, false);
@@ -28,6 +30,7 @@ export default function WidgetPageInitiator() {
   useEffect(() => {
     window.addEventListener("message", receiveMessage, false);
     if (formId) {
+    // if("CR8ImoMBN9PDgkFcXBDg"){
       initFormWithId(formId);
       console.log("formIdChanged, ", formId);
     } else {
@@ -36,17 +39,31 @@ export default function WidgetPageInitiator() {
   }, [formId]);
 
   async function initFormWithId(formId: string) {
-    const getRationDb = await dbProvider.getRation(formId);
-    const jsonRation = await (await dbProvider.getRation(formId)).json;
-    const ration: IRation = JSON.parse(jsonRation);
-    console.log("ration: ", ration);
-    dispatch(setName(ration.name));
-    dispatch(setSex(ration.sex));
-    dispatch(setSelectedFitnessChoice(ration.selectedFitnessChoice));
-    dispatch(setSelectedMonthWithdrawal(ration.selectedMonthWithdrawal));
-    dispatch(setSelectedStartDate(ration.selectedStartDate));
-    dispatch(setPreferencesState(ration.preferencesState));
-    dispatch(setComments(ration.comments));
+    const getRationDb = await dbProvider.getRationElastic(formId);
+        
+    console.log("ration: ", getRationDb);
+    dispatch(setName(getRationDb.name));
+    dispatch(setSex(getRationDb.sex));
+    dispatch(setSelectedFitnessChoice(getRationDb.selectedFitnessChoice));
+    dispatch(setSelectedMonthWithdrawal(getRationDb.selectedMonthWithdrawal));
+    dispatch(setSelectedStartDate(getRationDb.selectedStartDate));
+    const prefStateFromDb = getRationDb.preferencesState;
+    const preferenceState: IPreferenceCheckbox[] | undefined = prefState.map(i => {
+      if(prefStateFromDb.includes(i.label)){      
+        return {
+          isChecked: true,
+          label: i.label
+        }
+      }
+      else{
+        return {
+          isChecked: false,
+          label: i.label
+        }
+      }
+    })
+    dispatch(setPreferencesState(preferenceState));
+    dispatch(setComments(getRationDb.comments));
     dispatch(setAppVersion(getRationDb.appVersionId));
   }
 

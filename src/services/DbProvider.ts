@@ -1,6 +1,6 @@
 import { serviceUrl } from "../config/config";
 import { IGetAppVersion } from "../interface/IGetAppVersion";
-import { IAppPostRation, IGetRation, IPostRation, IRation } from "../interface/IRation";
+import { IAppPostRation, IAppPostRationElastic, IGetRation, IGetRationElastic, IPostRation, IRation } from "../interface/IRation";
 import { IDbProvider } from "./IDbProvider";
 
 export class DbProvider implements IDbProvider {
@@ -64,4 +64,46 @@ export class DbProvider implements IDbProvider {
 
     return rationPostGet;
   }
+
+  async addRationElastic(obj: IAppPostRationElastic): Promise<number> {
+    const query: string = serviceUrl + "api/ration/AddRationElastic";    
+
+    const resp: number = await fetch(query, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+    },
+      body: JSON.stringify(obj),
+    })
+      .then((response) => {
+        console.log("update Report response:", response);
+        // console.log("update Report response:", response.json());
+        if (!response.ok) {
+          response.text().then((text) => {
+            
+          });
+          return response.json();
+        }
+        return response.json();
+      })
+      .catch((e) => {
+        console.log("update Report catch e:", e);
+        return 0;
+      });
+
+    return resp;
+  }
+  async getRationElastic(id: string): Promise<IAppPostRationElastic> {
+    const query: string = serviceUrl + `api/ration/GetRationElastic?id=${id}`;
+    const rationPostGet: IAppPostRationElastic = await fetch(query)
+      .then((response) => {
+        return response.json();
+      })
+      .catch((e) => {        
+        return "";
+      });
+
+    return rationPostGet;
+  }
+  
 }
